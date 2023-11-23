@@ -1,16 +1,22 @@
-import { Schema, model } from 'mongoose'
-import { Address, FullName, IUser, Orders } from './user.interface'
+import { Model, Schema, model } from 'mongoose'
+import { Address, FullName, IUser, Orders, SUserModel } from './user.interface'
 
-const userNameSchema = new Schema<FullName>({
-  firstName: { type: String, required: [true, 'First name is required'] },
-  lastName: { type: String, required: [true, 'Last name is required'] },
-})
+const userNameSchema = new Schema<FullName>(
+  {
+    firstName: { type: String, required: [true, 'First name is required'] },
+    lastName: { type: String, required: [true, 'Last name is required'] },
+  },
+  { _id: false },
+)
 
-const addressSchema = new Schema<Address>({
-  street: { type: String, required: true },
-  city: { type: String, required: true },
-  country: { type: String, required: true },
-})
+const addressSchema = new Schema<Address>(
+  {
+    street: { type: String, required: true },
+    city: { type: String, required: true },
+    country: { type: String, required: true },
+  },
+  { _id: false },
+)
 
 const orderSchema = new Schema<Orders>([
   {
@@ -20,10 +26,14 @@ const orderSchema = new Schema<Orders>([
   },
 ])
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser, SUserModel>({
   userId: { type: Number, unique: true },
   username: { type: String, unique: true },
-  password: { type: String, required: [true, 'Password is required'] },
+  password: {
+    type: String,
+    required: [true, 'password is required'],
+    select: false,
+  },
   fullName: { type: userNameSchema },
   age: { type: Number, required: true },
   email: { type: String, required: true },
@@ -33,4 +43,11 @@ const userSchema = new Schema<IUser>({
   orders: { type: [orderSchema] },
 })
 
-export const UserModel = model('Users', userSchema)
+// creating static
+
+userSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await UserModel.findOne({ id })
+  return existingUser
+}
+
+export const UserModel = model<IUser, SUserModel>('Users', userSchema)
