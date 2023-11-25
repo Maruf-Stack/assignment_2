@@ -11,10 +11,10 @@ const createUser = async (req: Request, res: Response) => {
       data: result,
     })
     return result
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'cannot create user',
+      message: err.message || 'cannot create user',
       error: err,
     })
   }
@@ -36,15 +36,108 @@ const getAllUsers = async (req: Request, res: Response) => {
       message: 'users retrived successfully',
       data: resdata,
     })
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'cannot get users',
+      error: err,
+    })
+  }
+}
+const getSingleUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params
+
+    const result = await userServices.getSingleUser(userId)
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: 'user not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+      return 0
+    }
+    res.status(200).json({
+      success: true,
+      message: 'User fetched successfully',
+      data: result,
+    })
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'cannot get users',
+      message: 'something went wrong',
       error: err,
+      data: null,
+    })
+  }
+}
+//delete operation
+
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params
+    const result = await userServices.deleteUser(userId)
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: 'user not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+      return 0
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully',
+      data: result,
+    })
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || 'something went wrong',
+      error: err,
+      data: null,
+    })
+  }
+}
+//update operation
+
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+    const data = req.body
+    const result = await userServices.updateUser(userId, data)
+    if (!result) {
+      res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+    }
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err,
+      error: {
+        code: 500,
+        description: 'User not updated!',
+      },
     })
   }
 }
 export const userController = {
   createUser,
   getAllUsers,
+  getSingleUser,
+  deleteUser,
+  updateUser,
 }

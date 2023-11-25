@@ -1,6 +1,15 @@
-import { Model, Schema, model } from 'mongoose'
-import { Address, FullName, IUser, Orders, SUserModel } from './user.interface'
+import { Schema, model } from 'mongoose'
+import {
+  Address,
+  FullName,
+  IUser,
+  Orders,
+  SUserModel,
+  UserMethod,
+} from './user.interface'
 
+import bcrypt from 'bcrypt'
+import config from '../../config'
 const userNameSchema = new Schema<FullName>(
   {
     firstName: { type: String, required: [true, 'First name is required'] },
@@ -20,19 +29,18 @@ const addressSchema = new Schema<Address>(
 
 const orderSchema = new Schema<Orders>([
   {
-    productName: { type: String, required: true },
-    price: { type: Number, required: true },
-    quantity: { type: Number, required: true },
+    productName: { type: String },
+    price: { type: Number },
+    quantity: { type: Number },
   },
 ])
 
-const userSchema = new Schema<IUser, SUserModel>({
+const userSchema = new Schema<IUser, SUserModel, UserMethod>({
   userId: { type: Number, unique: true },
   username: { type: String, unique: true },
   password: {
     type: String,
     required: [true, 'password is required'],
-    select: false,
   },
   fullName: { type: userNameSchema },
   age: { type: Number, required: true },
@@ -43,11 +51,28 @@ const userSchema = new Schema<IUser, SUserModel>({
   orders: { type: [orderSchema] },
 })
 
-// creating static
-
-userSchema.statics.isUserExist = async function (id: string) {
-  const existingUser = await UserModel.findOne({ id })
+//instance
+userSchema.methods.isUserExist = async function (id: string | number) {
+  const existingUser = await UserModel.findOne({ userId: id })
   return existingUser
 }
+//static
+userSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await UserModel.findOne({ userId: id })
+  return existingUser
+}
+userSchema.post('save', async function (doc, next) {
+  doc.password = ''
+  next()
+})
+userSchema.pre('save', async function (next) {
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_sort_round),
+  )
+  next()
+})
 
 export const UserModel = model<IUser, SUserModel>('Users', userSchema)

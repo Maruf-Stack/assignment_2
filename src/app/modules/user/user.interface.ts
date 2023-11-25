@@ -1,3 +1,4 @@
+import { query } from 'express'
 import { Model } from 'mongoose'
 
 export interface FullName {
@@ -26,8 +27,12 @@ export interface IUser {
   isActive: boolean
   hobbies: Array<string>
   address: Address
-  orders: Orders
+  orders?: Orders
 }
-export interface SUserModel extends Model<IUser> {
-  isUserExist(id: string): Promise<IUser | null>
+//instace
+
+export type UserMethod = {
+  isUserExist(id: string | number): Promise<IUser | null>
 }
+
+export type SUserModel = Model<IUser, Record<string, never>, UserMethod>
