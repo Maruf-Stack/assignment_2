@@ -38,6 +38,7 @@ const updateUser = async (userId: number, data: IUser) => {
     {
       new: true,
       runValidators: true,
+      projection: { password: 0 },
     },
   )
 
