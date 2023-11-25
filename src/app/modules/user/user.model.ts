@@ -41,6 +41,7 @@ const userSchema = new Schema<IUser, SUserModel, UserMethod>({
   password: {
     type: String,
     required: [true, 'password is required'],
+    select: false,
   },
   fullName: { type: userNameSchema },
   age: { type: Number, required: true },

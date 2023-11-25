@@ -1,4 +1,3 @@
-import { query } from 'express'
 import { Model } from 'mongoose'
 
 export interface FullName {
