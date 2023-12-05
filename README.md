@@ -2,7 +2,7 @@ For locally run the project
 command: npm run dev
 1.For creating user :
 Method : post
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users
+Endpoint : https://assignment-2-six-murex.vercel.app/
 Request Body :
 {
     "userId": "number",

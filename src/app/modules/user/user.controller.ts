@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { userServices } from './user.service'
 import userValidationSchema from './user.validation'
+import { UserModel } from './user.model'
 
 //creating a user
 const createUser = async (req: Request, res: Response) => {
@@ -51,7 +52,6 @@ const getAllUsers = async (req: Request, res: Response) => {
 const getSingleUser = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
-
     const result = await userServices.getSingleUser(userId)
     if (!result) {
       res.status(404).json({

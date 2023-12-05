@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import mongoose, { Schema, model } from 'mongoose'
 import {
   Address,
   FullName,
@@ -35,7 +35,7 @@ const orderSchema = new Schema<Orders>([
   },
 ])
 
-const userSchema = new Schema<IUser, SUserModel, UserMethod>({
+const userSchema = new Schema<IUser, SUserModel>({
   userId: { type: Number, unique: true },
   username: { type: String, unique: true },
   password: {
@@ -54,12 +54,16 @@ const userSchema = new Schema<IUser, SUserModel, UserMethod>({
 
 //instance
 userSchema.methods.isUserExist = async function (id: string | number) {
-  const existingUser = await UserModel.findOne({ userId: id })
+  const existingUser = await this.findOne({ userId: id })
+  if (!existingUser) {
+    throw new Error('User not found')
+  }
+
   return existingUser
 }
 //static
 userSchema.statics.isUserExists = async function (id: string) {
-  const existingUser = await UserModel.findOne({ userId: id })
+  const existingUser = await this.findOne({ userId: id })
   return existingUser
 }
 userSchema.post('save', async function (doc, next) {
