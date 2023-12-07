@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import { userServices } from './user.service'
-import userValidationSchema from './user.validation'
-import { UserModel } from './user.model'
+import { validationSchemas } from './user.validation'
 
 //creating a user
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
-    const { error, value } = userValidationSchema.validate(user)
+    const { error, value } =
+      validationSchemas.userValidationSchema.validate(user)
     const result = await userServices.createUser(value)
     res.status(400).json({
       success: true,
@@ -115,7 +115,8 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const userId = Number(req.params.userId)
     const data = req.body
-    const { error, value } = userValidationSchema.validate(data)
+    const { error, value } =
+      validationSchemas.userUpdateValidationschema.validate(data)
     const result = await userServices.updateUser(userId, value)
 
     if (!result) {

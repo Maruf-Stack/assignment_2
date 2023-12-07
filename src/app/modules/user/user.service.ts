@@ -32,7 +32,7 @@ const deleteUser = async (id: string) => {
 }
 //update user
 
-const updateUser = async (userId: number, data: IUser) => {
+const updateUser = async (userId: number, data: Partial<IUser>) => {
   const result = await UserModel.findOneAndUpdate(
     { userId },
     { $set: data },

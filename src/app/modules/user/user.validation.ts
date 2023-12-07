@@ -32,5 +32,20 @@ const userValidationSchema = Joi.object({
   address: addressValidationSchema.required(),
   order: orderValidationSchema.optional(),
 })
+const userUpdateValidationschema = Joi.object({
+  userId: Joi.number().integer().optional(),
+  username: Joi.string().optional(),
+  password: Joi.string().optional(),
+  fullName: fullNameValidationSchema.optional(),
+  age: Joi.number().integer().optional(),
+  email: Joi.string().email().optional(),
+  isActive: Joi.boolean().optional(),
+  hobbies: Joi.array().items(Joi.string()).optional(),
+  address: addressValidationSchema.optional(),
+  order: orderValidationSchema.optional(),
+})
 
-export default userValidationSchema
+export const validationSchemas = {
+  userValidationSchema,
+  userUpdateValidationschema,
+}
