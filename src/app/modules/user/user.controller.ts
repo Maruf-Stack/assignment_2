@@ -6,8 +6,10 @@ import { validationSchemas } from './user.validation'
 const createUser = async (req: Request, res: Response) => {
   try {
     const user = req.body
+
     const { error, value } =
       validationSchemas.userValidationSchema.validate(user)
+    console.log(value)
     const result = await userServices.createUser(value)
     res.status(400).json({
       success: true,
