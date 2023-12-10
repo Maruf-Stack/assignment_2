@@ -2,11 +2,11 @@ import { IUser, Orders } from './user.interface'
 import { UserModel } from './user.model'
 
 const createUser = async (userData: IUser) => {
-  const user = new UserModel(userData)
-  if (await user.isUserExist(userData.userId)) {
+  const student = new UserModel(userData)
+  if (await student.isUserExist(userData.userId)) {
     throw new Error('User already exist')
   }
-  const result = await user.save()
+  const result = await student.save()
   const Tresult = await UserModel.findOne(
     { _id: result._id },
     { password: false },
@@ -17,7 +17,6 @@ const createUser = async (userData: IUser) => {
 
 const getAllUsers = async () => {
   const result = await UserModel.find().select('-password')
-
   return result
 }
 const getSingleUser = async (id: string) => {
@@ -32,7 +31,7 @@ const deleteUser = async (id: string) => {
 }
 //update user
 
-const updateUser = async (userId: number, data: Partial<IUser>) => {
+const updateUser = async (userId: number, data: IUser) => {
   const result = await UserModel.findOneAndUpdate(
     { userId },
     { $set: data },
