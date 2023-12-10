@@ -2,7 +2,7 @@ For locally run the project
 command: npm run dev
 1.For creating user :
 Method : post
-Endpoint : https://assignment-2-six-murex.vercel.app/
+Endpoint :https://assignment-2-six-murex.vercel.app/
 Request Body :
 {
     "userId": "number",
@@ -27,21 +27,21 @@ Request Body :
 }
 2. Retrieve a list of all users
 Method : get
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users
+Endpoint : https://assignment-2-six-murex.vercel.app/api/users
 3. Retrieve a specific user by ID
 Method : get
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId
+Endpoint : https://assignment-2-six-murex.vercel.app/api/users/:userId
 4. Update user information
 Method : put
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId
+Endpoint : https://assignment-2-six-murex.vercel.app/api/users/:userId
 
 5. Delete a user
 Method : delete
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId
+Endpoint : https://assignment-2-six-murex.vercel.app/api/users/:userId
 
 6. Add a New order
 Method : put
-Endpoint : https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId/orders
+Endpoint : https://assignment-2-six-murex.vercel.app/api/users/:userId/orders
 Request Body:
 {
   "productName": "string",
@@ -50,7 +50,7 @@ Request Body:
 }
 7. Retrieve all orders for a specific user
 Method : get
-Endpoint :  https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId/orders
+Endpoint :  https://assignment-2-six-murex.vercel.app/api/users/:userId/orders
 Response :
 {
   "success": true,
@@ -72,7 +72,7 @@ Response :
 }
 8. Calculate Total Price of Orders for a Specific User
 Method : get
-Endpoint :  https://assignment-2-ehf160dfd-maruf-stack.vercel.app/api/users/:userId/orders/total-price
+Endpoint :  https://assignment-2-six-murex.vercel.app/api/users/:userId/orders/total-price
 Response :
 {
   "success": true,
